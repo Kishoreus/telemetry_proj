@@ -16,6 +16,16 @@ app.use(cors())
 app.use('/api/v1',products)
 app.use('/api/v1',order)
 
+app.use(express.static(path.join(__dirname, '../frontend/build')));  // <-- Added this line to serve the React app's static files
+
+// Handle React routing, return all requests to the React app
+app.get('*', (req, res) => {                                        // <-- Added this block to ensure React Router works in production
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
+
+
+
+
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server listening to port ${process.env.PORT} in ${process.env.NODE_ENV}`)
